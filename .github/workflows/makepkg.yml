@@ -80,7 +80,7 @@ jobs:
           body: ${{ matrix.pkg }}
           draft: false
           add-paths: |
-            pkgs/${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst
+            pkgs/{{ matrix.pkg }}*.pkg.tar.zst
 
       - name: Stop and remove container forcefully.
         run: docker rm -f "$(cat ${container_id})"
