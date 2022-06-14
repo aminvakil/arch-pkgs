@@ -65,6 +65,7 @@ jobs:
           ls -l "${{ matrix.pkg }}"
           ls -l *
           id
+          chown -R runner:docker .
 
       - name: Create Pull Request
         if: github.event_name != 'pull_request'
