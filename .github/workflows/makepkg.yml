@@ -80,9 +80,9 @@ jobs:
           title: ${{ matrix.pkg }}
           body: ${{ matrix.pkg }}
           draft: false
-          add-paths: |
-            "pkgbuilds/${{ matrix.pkg }}"
-            "pkgbuilds/${{ matrix.pkg }}/PKGBUILD"
+          #          add-paths: |
+          #            "pkgbuilds/${{ matrix.pkg }}"
+          #            "pkgbuilds/${{ matrix.pkg }}/PKGBUILD"
 
       - name: Stop and remove container forcefully.
         run: docker rm -f "$(cat ${container_id})"
