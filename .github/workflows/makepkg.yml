@@ -58,5 +58,20 @@ jobs:
               docker exec -i "$(cat ${container_id})" sh < "ci/${{ matrix.pkg }}/after_makepkg.sh"
           fi
 
+      - name: Create Pull Request
+        if: github.event_name != 'pull_request'
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ${{ matrix.pkg }}
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: ${{ matrix.pkg }}
+          delete-branch: true
+          title: ${{ matrix.pkg }}
+          body: ${{ matrix.pkg }}
+          draft: false
+
       - name: Stop and remove container forcefully.
         run: docker rm -f "$(cat ${container_id})"
