@@ -64,6 +64,7 @@ jobs:
         run: |
           sudo chown -R runner:docker .
           mv ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst pkgs/
+          ls pkgs -l
 
       - name: Create Pull Request
         if: github.event_name != 'pull_request'
@@ -79,8 +80,8 @@ jobs:
           title: ${{ matrix.pkg }}
           body: ${{ matrix.pkg }}
           draft: false
-          add-paths: |
-            pkgs/{{ matrix.pkg }}*.pkg.tar.zst
+          # add-paths: |
+          #   pkgs/{{ matrix.pkg }}*.pkg.tar.zst
 
       - name: Stop and remove container forcefully.
         run: docker rm -f "$(cat ${container_id})"
