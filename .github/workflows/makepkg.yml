@@ -59,13 +59,11 @@ jobs:
               shellcheck "ci/${{ matrix.pkg }}/after_makepkg.sh"
               docker exec -i "$(cat ${container_id})" sh < "ci/${{ matrix.pkg }}/after_makepkg.sh"
           fi
-      - name: Debug
+
+      - name: Prepare package for Pull Request.
         run: |
-          ls -l
-          ls -l "${{ matrix.pkg }}"
-          ls -l *
-          id
           sudo chown -R runner:docker .
+          mv "${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst pkgs/"
 
       - name: Create Pull Request
         if: github.event_name != 'pull_request'
@@ -82,7 +80,7 @@ jobs:
           body: ${{ matrix.pkg }}
           draft: false
           add-paths: |
-            ${{ matrix.pkg }}/${{ matrix.pkg}}*.pkg.tar.zst
+            "pkgs/${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst"
 
       - name: Stop and remove container forcefully.
         run: docker rm -f "$(cat ${container_id})"
