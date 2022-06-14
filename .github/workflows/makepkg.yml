@@ -65,9 +65,6 @@ jobs:
           sudo chown -R runner:docker .
           mkdir -p "pkgbuilds/${{ matrix.pkg }}"
           mv "${{ matrix.pkg }}/PKGBUILD" "pkgbuilds/${{ matrix.pkg }}/PKGBUILD"
-          ls -la
-          ls -la pkgbuilds
-          ls -la "pkgbuilds/${{ matrix.pkg }}"
 
       - name: Create Pull Request
         if: github.event_name != 'pull_request'
