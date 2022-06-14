@@ -81,6 +81,7 @@ jobs:
           body: ${{ matrix.pkg }}
           draft: false
           add-paths: |
+            "pkgbuilds/${{ matrix.pkg }}"
             "pkgbuilds/${{ matrix.pkg }}/PKGBUILD"
 
       - name: Stop and remove container forcefully.
