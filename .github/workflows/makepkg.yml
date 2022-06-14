@@ -23,8 +23,10 @@ jobs:
       - name: Exit if pkg doesn't exist.
         run: if [[ ! $(git ls-remote "https://aur.archlinux.org/${{ matrix.pkg }}.git") ]]; then exit 1; fi
 
-      - name: Clone package.
-        run: git clone "https://aur.archlinux.org/${{ matrix.pkg }}.git"
+      - name: Download and Extract package.
+        run: |
+          curl -OL "https://aur.archlinux.org/cgit/aur.git/snapshot/${{ matrix.pkg }}.tar.gz"
+          tar -xvzf "${{ matrix.pkg }}.tar.gz"
 
       - name: Pull devel image.
         run: docker pull quay.io/aminvakil/archlinux:devel
