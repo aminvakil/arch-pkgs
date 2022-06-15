@@ -90,8 +90,7 @@ jobs:
           add-paths: |
             pkgbuilds/${{ matrix.pkg }}/PKGBUILD
 
-      - name: Push package to mirrors.
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      - name: Check if package has been changed.
         run: |
           # We have archlinux container and we can use, it's better to use pacman database instead of this hack #
           remote_pkg=$(curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | grep -Po '(?<=href=")[^"]*(?=")')
@@ -105,6 +104,10 @@ jobs:
           tar -xf remote_pkg/remote_pkg.pkg.tar
           tar -xf local_pkg/local_pkg.pkg.tar
           diff -x .BUILDINFO -x .PKGINFO -x .MTREE -x '*.tar' -x '*.tar.zst' remote_pkg local_pkg
+
+      - name: Push package to mirrors.
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }}
 
       - name: Stop and remove container forcefully.
