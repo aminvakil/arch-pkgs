@@ -69,10 +69,10 @@ jobs:
           sudo chown -R runner:docker .
           mkdir -p "pkgbuilds/${{ matrix.pkg }}"
           mv "${{ matrix.pkg }}/PKGBUILD" "pkgbuilds/${{ matrix.pkg }}/PKGBUILD"
-          echo ${pkg_name_ver_rel}
+          echo "$(cat ${pkg_name_ver_rel})"
 
       - name: Debug
-        run: echo ${{ steps.PKGBUILD_PREPARE.outputs.pkg_name_ver_rel }}
+        run: echo "$(cat ${pkg_name_ver_rel})"
 
       - name: Create Pull Request
         if: github.event_name != 'pull_request'
