@@ -73,9 +73,6 @@ jobs:
           pkg_name_ver_rel="$(cat ${pkg_name_ver_rel_temp})"
           echo "pkg_name_ver_rel=${pkg_name_ver_rel}" >> $GITHUB_ENV
 
-      - name: Debug
-        run: echo "$(cat ${pkg_name_ver_rel})"
-
       - name: Create Pull Request
         if: github.event_name != 'pull_request'
         uses: peter-evans/create-pull-request@v4
