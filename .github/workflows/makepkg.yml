@@ -61,6 +61,7 @@ jobs:
           fi
 
       - name: Prepare PKGBUILD for Pull Request.
+        id: PKGBUILD_PREPARE
         run: |
           pkg_name_ver_rel=$(mktemp)
           docker exec -i "$(cat ${container_id})" su devel sh -c "pacman -Q ${{ matrix.pkg }}" > "${pkg_name_ver_rel}"
@@ -74,14 +75,14 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: ${pkg_name_ver_rel}
+          commit-message: ${{ steps.PKGBUILD_PREPARE.outputs.pkg_name_ver_rel }}
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: ${{ matrix.pkg }}
           delete-branch: true
           title: ${{ matrix.pkg }}
-          body: ${pkg_name_ver_rel}
+          body: ${{ steps.PKGBUILD_PREPARE.outputs.pkg_name_ver_rel }}
           draft: false
           add-paths: |
             pkgbuilds/${{ matrix.pkg }}/PKGBUILD
