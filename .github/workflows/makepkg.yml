@@ -99,6 +99,8 @@ jobs:
           # We have archlinux container and we can use, it's better to use pacman database instead of this hack #
           remote_pkg=$(curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | grep -Po '(?<=href=")[^"]*(?=")')
           local_pkg=$(realpath ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst | sed 's/.*\///g')
+          curl "${MIRROR_URL}${remote_pkg}" -o remote_pkg.pkg.tar.zst
+          diff ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst remote_pkg.pkg.tar.zst || true
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }}
 
       - name: Stop and remove container forcefully.
