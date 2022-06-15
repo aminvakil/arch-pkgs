@@ -94,6 +94,9 @@ jobs:
       - name: Push package to mirrors.
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
+          # We have archlinux container and we can use, it's better to use pacman database instead of this hack #
+          remote_pkg=$(curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | grep -Po '(?<=href=")[^"]*(?=")')
+          local_pkg=$(realpath ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst | sed 's/.*\///g')
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }}
 
       - name: Stop and remove container forcefully.
