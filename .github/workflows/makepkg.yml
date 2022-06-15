@@ -16,6 +16,8 @@ jobs:
         include:
           - pkg: assetfinder
           - pkg: docker-prune
+    env:
+      MIRROR_URL: https://mirrors.aminvakil.com/archlinux/
     steps:
       - name: Check out the codebase.
         uses: actions/checkout@v2
