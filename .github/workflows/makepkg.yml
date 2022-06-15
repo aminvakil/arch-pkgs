@@ -94,8 +94,6 @@ jobs:
       - name: Push package to mirrors.
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
-          ls -la
-          ls -la *
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }}
 
       - name: Stop and remove container forcefully.
