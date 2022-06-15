@@ -102,8 +102,8 @@ jobs:
           cp ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst local_pkg/local_pkg.pkg.tar.zst
           zstd -d remote_pkg/remote_pkg.pkg.tar.zst
           zstd -d local_pkg/local_pkg.pkg.tar.zst
-          tar -xvf remote_pkg/remote_pkg.pkg.tar
-          tar -xvf local_pkg/local_pkg.pkg.tar
+          tar -xf remote_pkg/remote_pkg.pkg.tar
+          tar -xf local_pkg/local_pkg.pkg.tar
           diff -x .BUILDINFO -x .PKGINFO -x .MTREE -x '*.tar' -x '*.tar.zst' remote_pkg local_pkg
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }}
 
