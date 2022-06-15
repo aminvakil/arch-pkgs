@@ -97,7 +97,6 @@ jobs:
           remote_pkg=$(curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | grep -Po '(?<=href=")[^"]*(?=")')
           local_pkg=$(realpath ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst | sed 's/.*\///g')
           curl "${MIRROR_URL}${remote_pkg}" -o remote_pkg.pkg.tar.zst
-          diff ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst remote_pkg.pkg.tar.zst || true
           mkdir -p remote_pkg local_pkg
           cp remote_pkg.pkg.tar.zst remote_pkg
           cp ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst local_pkg/local_pkg.pkg.tar.zst
