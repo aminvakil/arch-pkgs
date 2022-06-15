@@ -95,6 +95,7 @@ jobs:
           # We have archlinux container and we can use, it's better to use pacman database instead of this hack #
           remote_pkg=$(curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | grep -Po '(?<=href=")[^"]*(?=")')
           local_pkg=$(realpath ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst | sed 's/.*\///g')
+          ${package_diff}="some"
           if [[ ${remote_pkg} == ${local_pkg} ]]; then
               curl "${MIRROR_URL}${remote_pkg}" -o remote_pkg.pkg.tar.zst
               mkdir -p remote_pkg local_pkg
@@ -105,10 +106,12 @@ jobs:
               tar -xf remote_pkg/remote_pkg.pkg.tar
               tar -xf local_pkg/local_pkg.pkg.tar
               diff -x .BUILDINFO -x .PKGINFO -x .MTREE -x '*.tar' -x '*.tar.zst' remote_pkg local_pkg
+              ${package_diff}="none"
           fi
+          echo "package_diff=${package_diff}" >> $GITHUB_ENV
 
       - name: Push package to mirrors.
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.package_diff == 'some'
         run: |
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }}
 
