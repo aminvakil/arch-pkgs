@@ -65,11 +65,11 @@ jobs:
         run: |
           pkg_name_ver_rel_temp=$(mktemp)
           docker exec -i "$(cat ${container_id})" su devel sh -c "pacman -Q ${{ matrix.pkg }}" > "${pkg_name_ver_rel_temp}"
-          # echo "pkg_name_ver_rel_temp=${pkg_name_ver_rel_temp}" >> $GITHUB_ENV
           sudo chown -R runner:docker .
           mkdir -p "pkgbuilds/${{ matrix.pkg }}"
           mv "${{ matrix.pkg }}/PKGBUILD" "pkgbuilds/${{ matrix.pkg }}/PKGBUILD"
           pkg_name_ver_rel="$(cat ${pkg_name_ver_rel_temp})"
+          echo "pkg_name_ver_rel=${pkg_name_ver_rel}" >> $GITHUB_ENV
 
       - name: Debug
         run: echo "$(cat ${pkg_name_ver_rel})"
@@ -79,14 +79,14 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: ${{ pkg_name_ver_rel }}
+          commit-message: ${{ env.pkg_name_ver_rel }}
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: ${{ matrix.pkg }}
           delete-branch: true
           title: ${{ matrix.pkg }}
-          body: ${{ pkg_name_ver_rel }}
+          body: ${{ env.pkg_name_ver_rel }}
           draft: false
           add-paths: |
             pkgbuilds/${{ matrix.pkg }}/PKGBUILD
