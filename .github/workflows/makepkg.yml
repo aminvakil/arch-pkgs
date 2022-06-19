@@ -143,10 +143,12 @@ jobs:
           fi
           fi
           echo "package_diff=${package_diff}" >> $GITHUB_ENV
+          echo "remote_pkg=${remote_pkg}" >> $GITHUB_ENV
 
       - name: Push package to mirrors.
         if: github.ref == 'refs/heads/main' && github.event_name == 'push' && env.package_diff == 'some'
         run: |
+          curl -X DELETE "${MIRROR_URL}${{ env.remote_pkg }}" ${{ secrets.AUTHORIZATION }} --fail
           curl -T ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst ${{ secrets.MIRROR_PATH }} ${{ secrets.AUTHORIZATION }} --fail
 
       - name: Stop and remove container forcefully.
