@@ -58,9 +58,9 @@ jobs:
 
       - name: Execute stuff after makepkg if there is any.
         run: |
-          if [ -f "ci/${{ matrix.pkg }}/after_makepkg.sh" ]; then
-              shellcheck "ci/${{ matrix.pkg }}/after_makepkg.sh"
-              docker exec -i "$(cat ${container_id})" sh < "ci/${{ matrix.pkg }}/after_makepkg.sh"
+          if curl -ILs "https://github.com/aminvakil/aur/raw/master/ci/${{ matrix.pkg }}/after_makepkg.sh" --fail -o /dev/null; then
+              curl -L "https://github.com/aminvakil/aur/raw/master/ci/${{ matrix.pkg }}/after_makepkg.sh" -o /tmp/after_makepkg.sh;
+              docker exec -i "$(cat ${container_id})" sh < "/tmp/after_makepkg.sh"
           fi
 
       - name: Prepare PKGBUILD for Pull Request.
