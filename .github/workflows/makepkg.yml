@@ -14,8 +14,40 @@ jobs:
     strategy:
       matrix:
         include:
+          - pkg: actionlint
+          - pkg: ansible-cmdb
+          - pkg: ansible-core-git
+          - pkg: ansible-lint-git
           - pkg: assetfinder
+          - pkg: assetfinder-git
+          - pkg: awx
+          - pkg: butane
+          - pkg: butane-bin
+          - pkg: ddosify
+          - pkg: ddosify-git
+          - pkg: docker-bench-security
+          - pkg: docker-bench-security-git
           - pkg: docker-prune
+          - pkg: dockle
+          - pkg: drupal8-git
+          - pkg: dstp
+          - pkg: dstp-git
+          - pkg: gnome-shell-extension-dash-to-dock-git
+          - pkg: gnome-shell-extension-public-ip-git
+          - pkg: gnome-shell-extension-workspace-matrix
+          - pkg: google-tsunami-security-scanner
+          - pkg: google-tsunami-security-scanner-git
+          - pkg: google-tsunami-security-scanner-plugins-git
+          - pkg: hadolint-git
+          - pkg: jmeter-plugins-manager
+          - pkg: pumba
+          - pkg: pumba-bin
+          - pkg: python-spotdl
+          - pkg: thelounge-beta
+          - pkg: trivy-git
+          - pkg: vim-markdown-git
+          - pkg: xssmap
+          - pkg: zoiper
     env:
       MIRROR_URL: https://mirrors.aminvakil.com/archlinux/
     steps:
