@@ -42,9 +42,9 @@ jobs:
 
       - name: Execute stuff before makepkg if there is any.
         run: |
-          if [ -f "ci/${{ matrix.pkg }}/before_makepkg.sh" ]; then
-              shellcheck "ci/${{ matrix.pkg }}/before_makepkg.sh"
-              docker exec -i "$(cat ${container_id})" sh < "ci/${{ matrix.pkg }}/before_makepkg.sh"
+          if curl -ILs "https://github.com/aminvakil/aur/raw/master/ci/${{ matrix.pkg }}/before_makepkg.sh" --fail -o /dev/null; then
+              curl -L "https://github.com/aminvakil/aur/raw/master/ci/${{ matrix.pkg }}/before_makepkg.sh" -o /tmp/before_makepkg.sh;
+              docker exec -i "$(cat ${container_id})" sh < "/tmp/before_makepkg.sh"
           fi
 
       - name: Upgrade all packages.
