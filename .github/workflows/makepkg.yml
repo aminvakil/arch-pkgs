@@ -15,6 +15,7 @@ jobs:
       matrix:
         include:
           - pkg: assetfinder
+          - pkg: butane-bin
           - pkg: docker-prune
     env:
       MIRROR_URL: https://mirrors.aminvakil.com/archlinux/
