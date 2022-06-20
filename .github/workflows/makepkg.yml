@@ -126,7 +126,7 @@ jobs:
         run: |
           # We have archlinux container and we can use, it's better to use pacman database instead of this hack #
           package_diff="some"
-          if curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | grep -Po '(?<=href=")[^"]*(?=")'; then
+          if curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | head -n 1 | grep -Po '(?<=href=")[^"]*(?=")'; then
           remote_pkg=$(curl -s "${MIRROR_URL}" | grep "${{ matrix.pkg }}" | head -n 1 | grep -Po '(?<=href=")[^"]*(?=")')
           local_pkg=$(realpath ${{ matrix.pkg }}/${{ matrix.pkg }}*.pkg.tar.zst | sed 's/.*\///g')
           if [[ ${remote_pkg} == ${local_pkg} ]]; then
