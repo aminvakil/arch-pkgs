@@ -3,7 +3,7 @@
 
 _pkgname=trivy
 pkgname=trivy-git
-pkgver=r951.6f1035269
+pkgver=r952.d6d0a60d1
 pkgrel=1
 pkgdesc="A Simple and Comprehensive Vulnerability Scanner for Containers, Suitable for CI"
 arch=("x86_64" "i686")
